@@ -6,7 +6,7 @@ import mhkif.yc.regionsservice.entities.Region;
 
 import java.util.UUID;
 
-public interface RegionService extends Service<Region, UUID, RegionReq, RegionRes> {
+public interface RegionService extends Service<Region, Integer, RegionReq, RegionRes> {
 
     RegionRes update(Region user);
     boolean delete(Integer id);

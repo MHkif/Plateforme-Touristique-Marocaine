@@ -2,13 +2,16 @@ package mhkif.yc.usersservice.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import mhkif.yc.usersservice.dto.Region;
 import mhkif.yc.usersservice.enums.Role;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter @Setter
 @Table(name = "users")
 public class User {
     @Id
@@ -25,6 +28,10 @@ public class User {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Transient
+    private Region region;
+    @Column(nullable = false)
+    private int regionId;
     private LocalDateTime registeredAt;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;

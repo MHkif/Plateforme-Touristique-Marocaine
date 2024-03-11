@@ -44,7 +44,7 @@ public class RegionController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<HttpResponse> update(@RequestBody RegionRes user, @PathVariable UUID id) {
+    public ResponseEntity<HttpResponse> update(@RequestBody RegionRes user, @PathVariable int id) {
 
         return ResponseEntity.accepted().body(
                 HttpResponse.builder()
@@ -75,7 +75,7 @@ public class RegionController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<HttpResponse> get(@PathVariable UUID id){
+    public ResponseEntity<HttpResponse> get(@PathVariable int id){
         RegionRes regionRes = service.getById(id);
         return ResponseEntity.ok().body(
                 HttpResponse.builder()

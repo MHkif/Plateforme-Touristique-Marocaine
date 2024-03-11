@@ -28,7 +28,7 @@ public class RegionServiceImpl implements RegionService {
     private final ModelMapper mapper;
 
     @Override
-    public RegionRes getById(UUID id) {
+    public RegionRes getById(Integer id) {
         Optional<Region> userOp = repository.findById(id);
         return userOp.map(
                 user -> mapper.map(user, RegionRes.class)
@@ -39,7 +39,9 @@ public class RegionServiceImpl implements RegionService {
     @Override
     public Page<RegionRes> getAllPages(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
-        return null;
+        return repository.findAll(pageRequest).map(
+                user -> mapper.map(user, RegionRes.class)
+        );
     }
 
     @Override

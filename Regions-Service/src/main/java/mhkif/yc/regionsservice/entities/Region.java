@@ -14,13 +14,19 @@ import java.util.UUID;
 public class Region {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String name;
+    /*
     private String description;
     private String image;
     private double latitude;
     private double longitude;
+
+     */
+    @ManyToOne()
+    @JoinColumn(name = "country_id")
+    private Country country;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
 }

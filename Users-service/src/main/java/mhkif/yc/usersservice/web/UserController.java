@@ -3,6 +3,7 @@ package mhkif.yc.usersservice.web;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mhkif.yc.usersservice.dto.HttpResponse;
+import mhkif.yc.usersservice.dto.Region;
 import mhkif.yc.usersservice.dto.requests.UserReq;
 import mhkif.yc.usersservice.dto.responses.UserRes;
 import mhkif.yc.usersservice.services.UserService;
@@ -24,7 +25,7 @@ public class UserController {
 
 
     private final UserService service;
-    private final ModelMapper mapper;
+
 
 
     @PostMapping("")
@@ -91,6 +92,22 @@ public class UserController {
     }
 
 
+    @GetMapping("{id}/region")
+    public ResponseEntity<HttpResponse> getRegion(@PathVariable UUID id){
+        Region region = service.getRegionUser(id);
+        return ResponseEntity.ok().body(
+                HttpResponse.builder()
+                        .timeStamp(LocalDateTime.now().toString())
+                        .statusCode(HttpStatus.OK.value())
+                        .path("tourism/api/v1/users/{id}/region")
+                        .status(HttpStatus.OK)
+                        .message("User Region has been retrieved successfully")
+                        .developerMessage("User Region has been retrieved successfully")
+                        .data(Map.of("response", region))
+                        .build()
+        );
+    }
+
 
     @GetMapping("")
     public ResponseEntity<HttpResponse> getAll(){
@@ -107,6 +124,7 @@ public class UserController {
                         .build()
         );
     }
+
 
     @DeleteMapping("{id}")
     void deleteUser(@PathVariable UUID id) {

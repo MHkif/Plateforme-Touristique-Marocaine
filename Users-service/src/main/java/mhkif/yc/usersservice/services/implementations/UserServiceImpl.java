@@ -1,8 +1,10 @@
 package mhkif.yc.usersservice.services.implementations;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mhkif.yc.usersservice.clients.RegionRestClient;
+import mhkif.yc.usersservice.dto.HttpResponse;
+import mhkif.yc.usersservice.dto.Region;
 import mhkif.yc.usersservice.dto.requests.UserReq;
 import mhkif.yc.usersservice.dto.responses.UserRes;
 import mhkif.yc.usersservice.entities.User;
@@ -13,16 +15,11 @@ import mhkif.yc.usersservice.exceptions.NotFoundException;
 import mhkif.yc.usersservice.repositories.UserRepository;
 import mhkif.yc.usersservice.services.UserService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,16 +31,28 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
+    private final RegionRestClient regionRestClient;
     private final ModelMapper mapper;
 
     @Override
     public UserRes getById(UUID id) {
-        Optional<User> userOp = repository.findById(id);
-        return userOp.map(
-                user -> mapper.map(user, UserRes.class)
-        ).orElseThrow(() -> new NotFoundException("User Not Exist with the given Id : " + id)
-        );
+        User user = repository.findById(id).orElseThrow(() -> new NotFoundException("User Not Exist with the given Id : " + id));
+        var reg = regionRestClient.findRegionById(user.getRegId()).getData().get("response");
+        Region region = mapper.map(reg, Region.class);
+        log.info("\n\nRegion : " +region.getId());
+        user.setRegion(region);
+        return mapper.map(user, UserRes.class);
+
     }
+
+    @Override
+    public Region getRegionUser(UUID id) {
+        User user = repository.findById(id).orElseThrow(() -> new NotFoundException("User Not Exist with the given Id : " + id));
+        var reg = regionRestClient.findRegionById(user.getRegId()).getData().get("response");
+        return mapper.map(reg, Region.class);
+
+    }
+
 
     @Override
     public Page<UserRes> getAllPages(int page, int size) {
@@ -55,6 +64,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserRes> getAll() {
+        //Region region = regionRestClient.findRegionById(user.getRegId());
+        //log.info("\n\nRegion : "+region.getId());
+        //user.setRegion(region);
         return repository.findAll().stream().map(
                 user -> mapper.map(user, UserRes.class)
         ).toList();

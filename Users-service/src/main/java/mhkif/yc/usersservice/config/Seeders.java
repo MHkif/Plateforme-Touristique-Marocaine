@@ -2,16 +2,12 @@ package mhkif.yc.usersservice.config;
 
 import lombok.RequiredArgsConstructor;
 import mhkif.yc.usersservice.entities.User;
-import mhkif.yc.usersservice.enums.Role;
 import mhkif.yc.usersservice.repositories.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 import static mhkif.yc.usersservice.enums.Role.ADMIN;
 import static mhkif.yc.usersservice.enums.Role.USER;
@@ -36,7 +32,7 @@ public class Seeders implements CommandLineRunner {
         admin.setEmail("malikhkif@gmail.com");
         admin.setPassword("aqwzsxedc");
         admin.setRole(ADMIN);
-        admin.setRegionId(2);
+        admin.setRegId(2);
         admin.setCreatedAt(LocalDateTime.now());
 
 
@@ -46,7 +42,7 @@ public class Seeders implements CommandLineRunner {
         user.setEmail("aziz@gmail.com");
         user.setPassword("aqwzsxedc");
         user.setRole(USER);
-        user.setRegionId(1);
+        user.setRegId(1);
         user.setCreatedAt(LocalDateTime.now());
 
         var users = List.of(

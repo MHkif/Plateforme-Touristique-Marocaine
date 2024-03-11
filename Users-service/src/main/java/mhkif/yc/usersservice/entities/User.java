@@ -1,7 +1,6 @@
 package mhkif.yc.usersservice.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import mhkif.yc.usersservice.dto.Region;
@@ -31,7 +30,7 @@ public class User {
     @Transient
     private Region region;
     @Column(nullable = false)
-    private int regionId;
+    private int regId;
     private LocalDateTime registeredAt;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;

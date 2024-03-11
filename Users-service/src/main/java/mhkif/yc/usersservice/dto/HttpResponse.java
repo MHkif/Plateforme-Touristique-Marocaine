@@ -10,7 +10,6 @@ import java.util.Map;
 
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class HttpResponse {
     protected String timeStamp;
     protected int statusCode;
@@ -19,5 +18,6 @@ public class HttpResponse {
     protected String developerMessage;
     protected String path;
     protected String requestMethod;
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     protected Map<?, ?> data;
 }
